@@ -1,0 +1,27 @@
+{
+  "model_type": "ONNX",
+  "npu_mode": "NPU2",
+  "target_hardware": "AX620E",
+  "input": "/data/dp.onnx",
+  "output_dir": "/tmp/build_npu_dp_u16",
+  "output_name": "dp-u16.axmodel",
+  "onnx_opt": {
+    "enable_onnxsim": false,
+    "disable_onnx_optimization": true
+  },
+  "quant": {
+    "input_configs": [
+      {"tensor_name": "x",                "calibration_dataset": "/data/calibration/dp_x.tar",                "calibration_format": "Numpy", "calibration_size": -1},
+      {"tensor_name": "x_mask",           "calibration_dataset": "/data/calibration/dp_x_mask.tar",           "calibration_format": "Numpy", "calibration_size": -1},
+      {"tensor_name": "g",                "calibration_dataset": "/data/calibration/dp_g.tar",                "calibration_format": "Numpy", "calibration_size": -1},
+      {"tensor_name": "prosody_features", "calibration_dataset": "/data/calibration/dp_prosody_features.tar", "calibration_format": "Numpy", "calibration_size": -1},
+      {"tensor_name": "lid",              "calibration_dataset": "/data/calibration/dp_lid.tar",              "calibration_format": "Numpy", "calibration_size": -1}
+    ],
+    "layer_configs": [
+      {"start_tensor_names": ["DEFAULT"], "end_tensor_names": ["DEFAULT"], "data_type": "U16"}
+    ],
+    "calibration_method": "MinMax",
+    "precision_analysis": false
+  },
+  "compiler": {"check": 0}
+}
